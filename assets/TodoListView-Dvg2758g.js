@@ -1,0 +1,1 @@
+import{_ as e,c as s,a as t,o as a}from"./index-BL6SADWQ.js";const c={},n={class:"about"};function r(_,o){return a(),s("div",n,[...o[0]||(o[0]=[t("h1",null,"TodoList",-1)])])}const i=e(c,[["render",r]]);export{i as default};
