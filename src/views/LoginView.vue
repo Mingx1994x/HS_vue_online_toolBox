@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useLogin, useRegister } from '@/composable/useAuth'
 
 const signInField = ref({
@@ -13,22 +14,22 @@ const signUpField = ref({
   nickname: 'meow',
 })
 
-const { mutate: signIn } = useLogin()
+const { mutate: signIn, isSuccess: signInState } = useLogin()
 const { mutate: signUp } = useRegister()
-const handleLogin = (data) => {
-  signIn(data)
-}
 
-const handleRegister = (data) => {
-  signUp(data)
-}
+const router = useRouter()
+watch(signInState, () => {
+  if (signInState.value) {
+    router.push('/todos-board')
+  }
+})
 </script>
 
 <template>
   <main>
     <h1>登入 / 註冊</h1>
     <div class="flex flex-col">
-      <form @submit.prevent="handleLogin(signInField)" class="w-30 mb-4">
+      <form @submit.prevent="signIn(signInField)" class="w-30 mb-4">
         <div class="d-flex flex-col">
           <span>Email</span>
           <input type="email" placeholder="example@gmail.com" v-model.trim="signInField.email" />
@@ -39,7 +40,7 @@ const handleRegister = (data) => {
         </div>
         <button type="submit" class="btn-md rounded btn-primary">登入</button>
       </form>
-      <form @submit.prevent="handleRegister(signUpField)" class="w-30">
+      <form @submit.prevent="signUp(signUpField)" class="w-30">
         <div class="d-flex flex-col">
           <span>Email</span>
           <input type="email" placeholder="example@gmail.com" v-model.trim="signUpField.email" />
