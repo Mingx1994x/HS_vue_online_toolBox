@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+
+@variant dark (&.dark);
+
+@theme {
+}
+@plugin "flowbite/plugin";
