@@ -92,11 +92,11 @@ const handleEditTodo = (id, content) => {
           <a role="button" @click="signOut">登出</a>
         </div>
       </div>
-      <div class="relative">
+      <div class="relative mb-4">
         <input
           type="text"
           id="register_nickname"
-          class="bg-neutral-50 text-neutral-500 border-none rounded-[10px] focus:ring-neutral-500 focus:border-neutral-500 block w-full py-3 ps-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          class="bg-neutral-50 text-neutral-500 border-none rounded-[10px] focus:ring-neutral-500 focus:border-neutral-500 block w-full py-3 ps-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 drop-shadow"
           placeholder="新增待辦事項"
           v-model.trim="newTodo"
         />
