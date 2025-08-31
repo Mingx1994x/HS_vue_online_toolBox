@@ -18,6 +18,9 @@
   .btn {
     @apply px-12 py-3 w-auto text-center;
   }
+  .btn-square {
+    @apply p-2.5 text-center;
+  }
   .btn-primary {
     @apply text-neutral-500 bg-primary-500;
   }
