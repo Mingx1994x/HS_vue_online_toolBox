@@ -5,7 +5,15 @@
   display: block;
 }
 
-.add-icon {
+.add-icon,
+.check-icon {
   font-size: 20px;
   font-variation-settings: 'wght' 700;
+}
+
+.checkbox-icon,
+.delete-icon,
+.edit-icon {
+  font-size: 20px;
+  font-variation-settings: 'wght' 400;
 }
