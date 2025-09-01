@@ -4,6 +4,7 @@
   --color-primary-500: #ffd370;
   --color-neutral-500: #333333;
   --color-neutral-300: #9f9a91;
+  --color-neutral-100: #efefef;
   --color-neutral-50: #ffffff;
   --color-alert-500: #d87355;
 }
@@ -17,6 +18,9 @@
 @layer component {
   .btn {
     @apply px-12 py-3 w-auto text-center;
+  }
+  .btn-square {
+    @apply p-2.5 text-center;
   }
   .btn-primary {
     @apply text-neutral-500 bg-primary-500;
