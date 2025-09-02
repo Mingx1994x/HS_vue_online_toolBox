@@ -9,6 +9,17 @@
   --color-alert-500: #d87355;
 }
 
+@utility bg-linear-primary {
+  background: linear-gradient(
+    172.7deg,
+    #ffd370 5.12%,
+    #ffd370 53.33%,
+    #ffd370 53.44%,
+    #ffffff 53.45%,
+    #ffffff 94.32%
+  );
+}
+
 @layer base {
   body {
     background-color: var(--color-primary-500);
@@ -16,6 +27,7 @@
 }
 
 @layer component {
+  /* 按鈕 */
   .btn {
     @apply px-12 py-3 w-auto text-center;
   }
@@ -28,6 +40,11 @@
 
   .btn-neutral {
     @apply text-white bg-neutral-500;
+  }
+
+  /* 陰影 */
+  .custom-drop-shadow {
+    box-shadow: 0px 0px 15px 0px #00000026;
   }
 }
 
