@@ -57,6 +57,13 @@ const undoneListsCount = computed(
   () => todos.value?.data.filter((todo) => !todo.status).length ?? 0,
 )
 
+// tab 樣式
+const tabClasses = (type) => ({
+  'block p-4 border-b-2': true,
+  'border-neutral-100 hover:border-gray-300': listType.value !== type,
+  'text-neutral-500 border-neutral-500': listType.value === type,
+})
+
 watchEffect(() => {
   if (isLoading.value || isFetching.value) {
     console.log('正在抓取資料')
@@ -82,78 +89,66 @@ const handleAddTodo = (newTodoData) => {
 }
 </script>
 <template>
-  <div class="mx-auto px-3 pt-4">
-    <div class="w-full md:w-1/2 lg:w-1/3 mx-auto px-5">
-      <div class="flex justify-between items-center mb-4">
-        <img src="/logo_lg.svg" alt="logo" style="width: 242.51px" />
-        <div class="flex">
-          <h2 class="hidden md:block">{{ userNickname }}的代辦</h2>
-          <a role="button" @click="signOut">登出</a>
+  <div class="sm:bg-linear-primary min-h-screen">
+    <div class="mx-auto px-3 pt-4">
+      <div class="w-full px-5">
+        <div class="flex justify-between items-center">
+          <img src="/logo_lg.svg" alt="logo" style="width: 242.51px" />
+          <div class="flex">
+            <h2 class="hidden sm:block me-6">{{ userNickname }}的代辦</h2>
+            <a role="button" @click="signOut">登出</a>
+          </div>
         </div>
       </div>
-      <div class="relative mb-4">
-        <input
-          type="text"
-          id="register_nickname"
-          class="bg-neutral-50 text-neutral-500 border-none rounded-[10px] focus:ring-neutral-500 focus:border-neutral-500 block w-full py-3 ps-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 drop-shadow"
-          placeholder="新增待辦事項"
-          v-model.trim="newTodo"
-        />
-        <button
-          class="btn-square btn-neutral rounded-[10px] absolute bottom-0 right-0 -translate-[4px]"
-          @click="handleAddTodo(newTodo)"
-        >
-          <span class="material-symbols-outlined add-icon"> add </span>
-        </button>
-      </div>
-      <template v-if="listsCount !== 0">
-        <div class="bg-white text-sm rounded-[10px] px-4 pb-4 md:px-6 drop-shadow">
-          <ul
-            class="text-neutral-300 dark:text-gray-400 text-center font-bold flex flex-wrap -mx-4 -mb-[2px]"
+      <div class="w-full sm:w-2/3 lg:w-1/2 mx-auto mt-4 sm:mt-10 px-5">
+        <div class="relative">
+          <input
+            type="text"
+            id="register_nickname"
+            class="bg-neutral-50 text-neutral-500 border-none rounded-[10px] focus:ring-neutral-500 focus:border-neutral-500 block w-full py-3 ps-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 custom-drop-shadow"
+            placeholder="新增待辦事項"
+            v-model.trim="newTodo"
+          />
+          <button
+            class="btn-square btn-neutral rounded-[10px] absolute bottom-0 right-0 -translate-[4px]"
+            @click="handleAddTodo(newTodo)"
           >
-            <li class="w-1/3">
-              <a
-                :class="
-                  listType === 'all'
-                    ? 'block p-4 text-neutral-500 border-b-2 border-neutral-500 dark:text-blue-500 dark:border-blue-500'
-                    : 'block p-4 border-b-2 border-neutral-100 hover:border-gray-300'
-                "
-                @click.prevent="handleListType('all')"
-                >全部</a
-              >
-            </li>
-            <li class="w-1/3">
-              <a
-                :class="
-                  listType === 'undone'
-                    ? 'block p-4 text-neutral-500 border-b-2 border-neutral-500 dark:text-blue-500 dark:border-blue-500 active'
-                    : 'block p-4 border-b-2 border-neutral-100 hover:border-gray-300'
-                "
-                @click.prevent="handleListType('undone')"
-                aria-current="page"
-                >待完成</a
-              >
-            </li>
-            <li class="w-1/3">
-              <a
-                :class="
-                  listType === 'isDone'
-                    ? 'block p-4 text-neutral-500 border-b-2 border-neutral-500 dark:text-blue-500 dark:border-blue-500 active'
-                    : 'block p-4 border-b-2 border-neutral-100 hover:border-gray-300'
-                "
-                @click.prevent="handleListType('isDone')"
-                >已完成</a
-              >
-            </li>
-          </ul>
-
-          <TodoList :mode="listType" :todo-list="todoList" />
-          <p class="py-2">{{ undoneListsCount }} 個待完成項目</p>
+            <span class="material-symbols-outlined add-icon"> add </span>
+          </button>
         </div>
-      </template>
-      <div v-else>
-        <p>目前尚無待辦事項</p>
-        <img src="/empty 1.svg" alt="目前尚無待辦事項" />
+        <template v-if="listsCount !== 0">
+          <div class="bg-white text-sm rounded-[10px] px-4 pb-4 mt-4 md:px-6 custom-drop-shadow">
+            <ul
+              class="text-neutral-300 dark:text-gray-400 text-center font-bold flex flex-wrap -mx-4 -mb-[2px]"
+            >
+              <li class="w-1/3">
+                <a :class="tabClasses('all')" @click.prevent="handleListType('all')">全部</a>
+              </li>
+              <li class="w-1/3">
+                <a
+                  :class="tabClasses('undone')"
+                  @click.prevent="handleListType('undone')"
+                  aria-current="page"
+                  >待完成</a
+                >
+              </li>
+              <li class="w-1/3">
+                <a :class="tabClasses('isDone')" @click.prevent="handleListType('isDone')"
+                  >已完成</a
+                >
+              </li>
+            </ul>
+
+            <TodoList :mode="listType" :todo-list="todoList" />
+            <p class="py-2">{{ undoneListsCount }} 個待完成項目</p>
+          </div>
+        </template>
+        <template v-else>
+          <div class="w-2/3 mx-auto mt-8 flex flex-col lg:mt-12">
+            <p class="text-center mb-4">目前尚無待辦事項</p>
+            <img src="/empty 1.svg" alt="目前尚無待辦事項" />
+          </div>
+        </template>
       </div>
     </div>
   </div>
