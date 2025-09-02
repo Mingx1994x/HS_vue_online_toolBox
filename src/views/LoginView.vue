@@ -33,21 +33,21 @@ const switchMode = (mode) => {
 
 <template>
   <main>
-    <div class="mx-auto px-3 pt-12">
-      <div
-        class="min-h-screen flex flex-col md:flex-row flex-wrap -mx-3 items-start md:items-center gap-y-4"
-      >
+    <div class="mx-auto px-3">
+      <div class="h-screen flex flex-col -mx-3 items-start gap-y-4 md:flex-row md:items-center">
         <div class="w-full md:w-1/2 lg:w-5/12 mx-auto px-3">
-          <div class="flex flex-col items-center">
-            <img src="/logo_lg.svg" alt="logo" />
-            <img class="hidden md:block mt-4" src="/img.svg" alt="picture" />
+          <div class="mt-12 md:mt-0">
+            <div class="flex flex-col items-center">
+              <img src="/logo_lg.svg" alt="logo" />
+              <img class="hidden md:block mt-4" src="/img.svg" alt="picture" />
+            </div>
           </div>
         </div>
         <!-- login & register -->
         <template v-if="currentMode === 'sign_up'">
-          <div class="w-full md:w-1/2 lg:w-1/3 mx-auto px-5 md:px-3">
+          <div class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto px-5 md:px-3">
             <div class="flex flex-col justify-center">
-              <h2 class="text-2xl text-bold text-center mb-8 md:mb-6">註冊帳號</h2>
+              <h2 class="text-2xl text-bold text-center mb-8 md:text-start md:mb-6">註冊帳號</h2>
               <form @submit.prevent="signUp(signUpField)">
                 <div class="mb-4 pe-[7px] md:pe-0">
                   <label
@@ -129,9 +129,11 @@ const switchMode = (mode) => {
           </div>
         </template>
         <template v-else>
-          <div class="w-full md:w-1/2 lg:w-1/3 mx-auto px-5 md:px-3">
+          <div class="w-full sm:w-2/3 md:w-1/2 lg:w-1/3 mx-auto px-5 md:px-3">
             <div class="flex flex-col justify-center">
-              <h2 class="text-2xl text-bold text-center mb-8 md:mb-6">最實用的線上代辦事項服務</h2>
+              <h2 class="text-2xl text-bold text-center mb-8 md:text-start md:mb-6">
+                最實用的線上代辦事項服務
+              </h2>
               <form @submit.prevent="signIn(signInField)">
                 <div class="mb-4 pe-[7px] md:pe-0">
                   <label
