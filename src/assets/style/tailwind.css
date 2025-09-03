@@ -4,8 +4,20 @@
   --color-primary-500: #ffd370;
   --color-neutral-500: #333333;
   --color-neutral-300: #9f9a91;
+  --color-neutral-100: #efefef;
   --color-neutral-50: #ffffff;
   --color-alert-500: #d87355;
+}
+
+@utility bg-linear-primary {
+  background: linear-gradient(
+    172.7deg,
+    #ffd370 5.12%,
+    #ffd370 53.33%,
+    #ffd370 53.44%,
+    #ffffff 53.45%,
+    #ffffff 94.32%
+  );
 }
 
 @layer base {
@@ -15,8 +27,12 @@
 }
 
 @layer component {
+  /* 按鈕 */
   .btn {
     @apply px-12 py-3 w-auto text-center;
+  }
+  .btn-square {
+    @apply p-2.5 text-center;
   }
   .btn-primary {
     @apply text-neutral-500 bg-primary-500;
@@ -24,6 +40,11 @@
 
   .btn-neutral {
     @apply text-white bg-neutral-500;
+  }
+
+  /* 陰影 */
+  .custom-drop-shadow {
+    box-shadow: 0px 0px 15px 0px #00000026;
   }
 }
 
