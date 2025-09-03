@@ -2,11 +2,14 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLogin, useRegister } from '@/composable/useAuth'
-import AuthForm from '@/components/AuthForm.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
+import LoginForm from '@/components/LoginForm.vue'
 
 // 切換 登入/註冊表單
-const currentMode = ref('sign_up')
+const currentMode = ref('sign_in')
 const switchMode = (mode) => {
+  console.log('switch to', mode)
+
   currentMode.value = mode
 }
 
@@ -29,9 +32,9 @@ const handleSignIn = (data) => {
   })
 }
 
-const handleSubmitForm = ({ mode, userData }) => {
-  console.log(mode, userData)
-  return mode === 'sign_up' ? handleSignUp(userData) : handleSignIn(userData)
+const handleSubmitForm = (userData) => {
+  console.log(userData)
+  return currentMode.value === 'sign_up' ? handleSignUp(userData) : handleSignIn(userData)
 }
 </script>
 
@@ -48,7 +51,12 @@ const handleSubmitForm = ({ mode, userData }) => {
           </div>
         </div>
         <!-- login & register -->
-        <AuthForm :mode="currentMode" @switch-mode="switchMode" @submit-form="handleSubmitForm" />
+        <template v-if="currentMode === 'sign_in'">
+          <LoginForm @switch-mode="switchMode" @submit-form="handleSubmitForm" />
+        </template>
+        <template v-else>
+          <RegisterForm @switch-mode="switchMode" @submit-form="handleSubmitForm" />
+        </template>
       </div>
     </div>
   </main>
