@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 
 import { useCheckout, useLogout } from '@/composable/useAuth'
 import { useTodo } from '@/composable/useTodo'
+import { useFullScreenLoader } from '@/composable/useLoading'
 
 // components
 import DashBoardHeader from '@/components/DashBoardHeader.vue'
@@ -42,11 +43,15 @@ watchEffect(() => {
 // getTodo
 const { data: todos, isLoading, isFetching } = useTodo({ enabled: userLoginState })
 
+// loader
+const fullScreenLoader = useFullScreenLoader()
 watchEffect(() => {
   if (isLoading.value || isFetching.value) {
+    fullScreenLoader.show()
     console.log('正在抓取資料')
   } else {
     console.log('新增資料', todos.value)
+    fullScreenLoader.hide()
   }
 })
 </script>
