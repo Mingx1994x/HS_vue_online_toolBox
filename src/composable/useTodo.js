@@ -1,34 +1,5 @@
-import axios from "axios";
+import { addTodo, editTodo, getTodo, patchTodo, removeTodo } from "@/utils/todosAPI";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
-
-const { VITE_APP_BASEURL: baseUrl } = import.meta.env
-
-const getTodo = async () => {
-  const res = await axios.get(`${baseUrl}/todos`)
-  return res.data
-}
-const addTodo = (newTodo) => (axios.post(`${baseUrl}/todos`, {
-  content: newTodo
-}))
-
-
-const patchTodo = (id) => (axios.patch(`${baseUrl}/todos/${id}/toggle`))
-
-
-const removeTodo = async (id) => {
-  const res = await axios.delete(`${baseUrl}/todos/${id}`)
-  return res.data
-}
-
-const editTodo = async ({ id, content }) => {
-
-  console.log("editTodo", id, content)
-
-  const res = await axios.put(`${baseUrl}/todos/${id}`, {
-    content,
-  })
-  return res.data
-}
 
 export const useTodo = (options = {}) => {
   return useQuery({

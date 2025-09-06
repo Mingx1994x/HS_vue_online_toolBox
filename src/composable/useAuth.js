@@ -1,29 +1,13 @@
-import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
-import { getToken, removeToken, setCookie } from '@/utils/cookieTools'
-import { checkout } from '@/utils/auth'
-
-const { VITE_APP_BASEURL: baseUrl } = import.meta.env
-
-const signIn = (userField) => (axios.post(`${baseUrl}/users/sign_in`, userField))
-
-const signUp = (userField) => (axios.post(`${baseUrl}/users/sign_up`, userField))
-
-const signOut = () => (axios.post(`${baseUrl}/users/sign_out`))
+import { removeToken, setCookie } from '@/utils/cookieTools'
+import { checkout, signIn, signOut, signUp } from '@/utils/authAPI'
 
 export const useCheckout = () => {
   return useQuery({
     queryKey: ['auth'],
     queryFn: checkout,
     staleTime: 1000 * 60 * 5,
-    onSuccess: (data) => {
-      console.log('驗證成功', data)
-      axios.defaults.headers.common['Authorization'] = getToken()
-    },
-    onError: (error) => {
-      console.log('驗證失敗', error)
-    },
   })
 }
 

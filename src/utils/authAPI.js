@@ -13,3 +13,15 @@ export const checkout = async () => {
 
   return res.data
 }
+
+export const signIn = (userField) => {
+  return axios.post(`${baseUrl}/users/sign_in`, userField)
+}
+
+export const signUp = (userField) => {
+  return axios.post(`${baseUrl}/users/sign_up`, userField)
+}
+
+export const signOut = () => {
+  return axios.post(`${baseUrl}/users/sign_out`)
+}

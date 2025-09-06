@@ -4,8 +4,7 @@ import axios from 'axios'
 
 import LoginView from '../views/LoginView.vue'
 import { getToken } from '@/utils/cookieTools'
-import { checkout } from '@/utils/auth'
-// import { useCheckout } from '@/composable/useAuth'
+import { checkout } from '@/utils/authAPI'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -41,33 +40,25 @@ router.beforeEach(async (to, from, next) => {
       return
     }
 
+    axios.defaults.headers.common['Authorization'] = token
+
     try {
-      const userAuth = await queryClient.ensureQueryData({
+      await queryClient.ensureQueryData({
         queryKey: ['auth'],
         queryFn: checkout,
         staleTime: 1000 * 60 * 10,
       })
-      console.log('去往後台頁面 登入狀態', userAuth?.status);
-      // if (!userAuth?.status) {
-      //   alert('Token 遺失或過期，請重新登入')
-      //   next('/login')
-      //   return
-      // }
-      axios.defaults.headers.common['Authorization'] = token
-
     } catch (error) {
       console.log(error);
+
       alert('Token 遺失或過期，請重新登入')
       next('/login')
       return
     }
-
   } else if (to.path === '/login') {
 
     const userAuth = queryClient.getQueryData(['auth']);
-    console.log(userAuth);
     if (userAuth?.status) {
-      console.log('去往Login頁面 登入狀態', userAuth?.status);
       next('/todos-board')
       return
     }
