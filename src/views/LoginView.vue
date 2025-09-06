@@ -1,77 +1,63 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useLogin, useRegister } from '@/composable/useAuth'
+import RegisterForm from '@/components/RegisterForm.vue'
+import LoginForm from '@/components/LoginForm.vue'
 
-const signInField = ref({
-  email: 'dameow@hex.com',
-  password: 'meow999',
-})
+// 切換 登入/註冊表單
+const currentMode = ref('sign_in')
+const switchMode = (mode) => {
+  console.log('switch to', mode)
 
-const signUpField = ref({
-  email: 'dameow@hex.com',
-  password: 'meow999',
-  nickname: 'meow',
-})
-
-const { mutate: signIn, isSuccess: signInState } = useLogin()
-const { mutate: signUp } = useRegister()
+  currentMode.value = mode
+}
 
 const router = useRouter()
-watch(signInState, () => {
-  if (signInState.value) {
-    router.push('/todos-board')
-  }
-})
+
+const { mutate: signUp } = useRegister()
+const handleSignUp = (data) => {
+  signUp(data, {
+    onSuccess: () => {
+      switchMode('sign_in')
+    },
+  })
+}
+const { mutate: signIn } = useLogin()
+const handleSignIn = (data) => {
+  signIn(data, {
+    onSuccess: () => {
+      router.push('/todos-board')
+    },
+  })
+}
+
+const handleSubmitForm = (userData) => {
+  console.log(userData)
+  return currentMode.value === 'sign_up' ? handleSignUp(userData) : handleSignIn(userData)
+}
 </script>
 
 <template>
   <main>
-    <h1>登入 / 註冊</h1>
-    <div class="flex flex-col">
-      <form @submit.prevent="signIn(signInField)" class="w-30 mb-4">
-        <div class="d-flex flex-col">
-          <span>Email</span>
-          <input type="email" placeholder="example@gmail.com" v-model.trim="signInField.email" />
+    <div class="mx-auto px-3">
+      <div class="h-screen flex flex-col -mx-3 items-start gap-y-4 md:flex-row md:items-center">
+        <div class="w-full md:w-1/2 lg:w-5/12 mx-auto px-3">
+          <div class="mt-12 md:mt-0">
+            <div class="flex flex-col items-center">
+              <img src="/logo_lg.svg" alt="logo" />
+              <img class="hidden md:block mt-4" src="/img.svg" alt="picture" />
+            </div>
+          </div>
         </div>
-        <div class="d-flex flex-col">
-          <span>Password</span>
-          <input type="password" placeholder="password" v-model="signInField.password" />
-        </div>
-        <button type="submit" class="btn-md rounded btn-primary">登入</button>
-      </form>
-      <form @submit.prevent="signUp(signUpField)" class="w-30">
-        <div class="d-flex flex-col">
-          <span>Email</span>
-          <input type="email" placeholder="example@gmail.com" v-model.trim="signUpField.email" />
-        </div>
-        <div class="d-flex flex-col">
-          <span>Nickname</span>
-          <input type="text" placeholder="nickname" v-model.trim="signUpField.nickname" />
-        </div>
-        <div class="d-flex flex-col">
-          <span>Password</span>
-          <input type="password" placeholder="password" v-model="signUpField.password" />
-        </div>
-        <button type="submit">註冊</button>
-      </form>
+        <!-- login & register -->
+        <template v-if="currentMode === 'sign_in'">
+          <LoginForm @switch-mode="switchMode" @submit-form="handleSubmitForm" />
+        </template>
+        <template v-else>
+          <RegisterForm @switch-mode="switchMode" @submit-form="handleSubmitForm" />
+        </template>
+      </div>
     </div>
   </main>
 </template>
-<style scoped>
-.d-flex {
-  display: flex;
-}
-
-.flex-col {
-  flex-direction: column;
-}
-
-.w-30 {
-  width: 30%;
-}
-
-.mb-4 {
-  margin-bottom: 16px;
-}
-</style>
