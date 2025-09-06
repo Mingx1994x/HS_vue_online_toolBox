@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import TodoList from './TodoList.vue'
 
 const props = defineProps({
@@ -8,16 +8,8 @@ const props = defineProps({
   },
 })
 
-watch(
-  () => props.todos,
-  (val) => {
-    console.log('子元件TodoBox收到新資料', val)
-  },
-)
-
 const listType = ref('all')
 const handleListType = (type) => {
-  console.log(type)
   listType.value = type
 }
 const todoList = computed(() => {

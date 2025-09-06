@@ -1,0 +1,11 @@
+.colored-toast.swal2-icon-success {
+  background-color: var(--color-lime-500) !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: var(--color-red-500) !important;
+}
+
+/* .colored-toast .swal2-title {
+  color: white;
+} */

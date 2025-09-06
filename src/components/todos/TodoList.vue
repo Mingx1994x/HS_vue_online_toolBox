@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useEditTodo, useRemoveTodo, useToggleTodo } from '@/composable/useTodo'
+import { alertModal, confirmModal, showToast } from '@/utils/alertTools'
 
 const props = defineProps({
   mode: {
@@ -13,14 +14,19 @@ const props = defineProps({
   },
 })
 
-watch(
-  () => props.todoList,
-  (val) => {
-    console.log('子元件收到新資料', val)
-  },
-)
 // removeTodo
 const { mutate: removeTodo } = useRemoveTodo()
+const handleRemoveTodo = (id) => {
+  confirmModal('warning', '確定要刪除此代辦嗎').then((result) => {
+    if (result.isConfirmed) {
+      removeTodo(id, {
+        onSuccess: () => {
+          showToast('success', '刪除代辦成功')
+        },
+      })
+    }
+  })
+}
 
 // toggleTodo
 const { mutate: toggleTodo } = useToggleTodo()
@@ -38,19 +44,18 @@ const handleEditMode = (id, content = '') => {
     editModeTodos.value[id].isEditing = !editModeTodos.value[id].isEditing
     editModeTodos.value[id].content = content
   }
-
-  console.log('handle', editModeTodos.value[id])
 }
 
 const handleEditTodo = (id, content) => {
   if (!content) {
-    alert('請輸入代辦事項')
+    alertModal('error', '請輸入代辦事項')
     return
   }
   editTodo(
     { id, content },
     {
       onSuccess: () => {
+        showToast('success', '編輯成功')
         handleEditMode(id)
       },
     },
@@ -80,7 +85,7 @@ const handleEditTodo = (id, content) => {
                   edit_square
                 </span>
               </button>
-              <button type="button" @click="removeTodo(todo.id)">
+              <button type="button" @click="handleRemoveTodo(todo.id)">
                 <span class="material-symbols-outlined delete-icon text-neutral-500"> delete </span>
               </button>
             </div>

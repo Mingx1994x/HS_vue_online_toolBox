@@ -1,16 +1,22 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useCheckout } from '@/composable/useAuth'
 
-const countDown = ref(7)
+const countDown = ref(5)
 const router = useRouter()
+
+const { data: userAuth } = useCheckout()
+const navigation = () => (userAuth.value?.status ? '/todos-board' : '/login')
+
+const navigateTarget = computed(() => (userAuth.value?.status ? '代辦服務' : '登入'))
 
 let timer
 onMounted(() => {
   timer = setInterval(() => {
     countDown.value--
 
-    if (countDown.value === 0) router.push('/')
+    if (countDown.value === 0) router.push(navigation())
   }, 1000)
 })
 
@@ -27,7 +33,7 @@ onUnmounted(() => {
           <p class="text-xl md:text-3xl text-center font-semibold">
             系統將在
             <span class="text-alert-500">{{ countDown }}</span>
-            秒後為您挑轉首頁
+            秒後為您跳轉{{ navigateTarget }}頁面
           </p>
           <div class="shake-box mx-auto">
             <img src="/vehicle-pirate.png" class="object-cover" alt="" />

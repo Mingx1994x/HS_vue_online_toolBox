@@ -8,8 +8,6 @@ import LoginForm from '@/components/LoginForm.vue'
 // 切換 登入/註冊表單
 const currentMode = ref('sign_in')
 const switchMode = (mode) => {
-  console.log('switch to', mode)
-
   currentMode.value = mode
 }
 
@@ -33,7 +31,6 @@ const handleSignIn = (data) => {
 }
 
 const handleSubmitForm = (userData) => {
-  console.log(userData)
   return currentMode.value === 'sign_up' ? handleSignUp(userData) : handleSignIn(userData)
 }
 </script>
