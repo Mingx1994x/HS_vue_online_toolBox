@@ -3,3 +3,6 @@
 
 /* tailwind */
 @import './style/tailwind.css';
+
+/* vue3-loading-overlay */
+@import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
