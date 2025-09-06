@@ -25,7 +25,6 @@ const handleSwitchMode = (mode) => {
 }
 
 const onSubmit = handleSubmit((values) => {
-  console.log(values)
   emits('submit-form', values)
 })
 </script>

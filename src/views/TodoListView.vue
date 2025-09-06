@@ -9,15 +9,20 @@ import { useTodo } from '@/composable/useTodo'
 import DashBoardHeader from '@/components/DashBoardHeader.vue'
 import TodoBox from '@/components/todos/TodoBox.vue'
 import TodoAddInput from '@/components/todos/TodoAddInput.vue'
+import { confirmModal } from '@/utils/alertTools'
 
 const { data: checkoutState, isLoading: checkLoading, isFetching: checkFetching } = useCheckout()
 const { mutate: signOut } = useLogout()
 const router = useRouter()
 const handleSignout = () => {
-  signOut(undefined, {
-    onSuccess: () => {
-      router.push('/login')
-    },
+  confirmModal('warning', '確定要登出嗎').then((result) => {
+    if (result.isConfirmed) {
+      signOut(undefined, {
+        onSuccess: () => {
+          router.push('/login')
+        },
+      })
+    }
   })
 }
 

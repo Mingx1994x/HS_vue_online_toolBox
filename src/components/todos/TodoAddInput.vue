@@ -1,18 +1,19 @@
 <script setup>
 import { ref } from 'vue'
 import { useAddTodo } from '@/composable/useTodo'
+import { alertModal, showToast } from '@/utils/alertTools'
 
 //  addTodo
 const newTodo = ref('')
 const { mutate: addTodo } = useAddTodo()
 const handleAddTodo = (newTodoData) => {
   if (!newTodoData) {
-    alert('請輸入代辦事項')
+    alertModal('error', '請輸入代辦事項')
     return
   }
   addTodo(newTodoData, {
     onSuccess: () => {
-      alert('新增成功')
+      showToast('success', '新增成功')
       newTodo.value = ''
     },
   })
