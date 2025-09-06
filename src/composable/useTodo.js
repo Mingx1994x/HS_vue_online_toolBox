@@ -1,5 +1,8 @@
-import { addTodo, editTodo, getTodo, patchTodo, removeTodo } from "@/utils/todosAPI";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
+
+import { addTodo, editTodo, getTodo, patchTodo, removeTodo } from "@/utils/todosAPI";
+import { alertModal } from "@/utils/alertTools";
+
 
 export const useTodo = (options = {}) => {
   return useQuery({
@@ -19,7 +22,7 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '新增失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '新增失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -29,12 +32,11 @@ export const useRemoveTodo = () => {
 
   return useMutation({
     mutationFn: removeTodo,
-    onSuccess: (res) => {
-      alert(res.message)
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '移除失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '移除失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -44,12 +46,11 @@ export const useToggleTodo = () => {
 
   return useMutation({
     mutationFn: patchTodo,
-    onSuccess: (res) => {
-      console.log('toggle', res);
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '完成勾選失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '完成勾選失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -59,13 +60,11 @@ export const useEditTodo = () => {
 
   return useMutation({
     mutationFn: editTodo,
-    onSuccess: (res) => {
-      console.log('edit', res);
-      alert(res.message)
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '編輯失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '編輯失敗，請重試或是洽詢客服')
     }
   })
 }

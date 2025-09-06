@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 import { removeToken, setCookie } from '@/utils/cookieTools'
 import { checkout, signIn, signOut, signUp } from '@/utils/authAPI'
+import { alertModal } from '@/utils/alertTools'
 
 export const useCheckout = () => {
   return useQuery({
@@ -23,7 +24,8 @@ export const useLogin = () => {
       await queryClient.refetchQueries(['auth'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '登入失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '登入失敗，請重試或是洽詢客服')
+
     }
   })
 }
@@ -32,10 +34,10 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: signUp,
     onSuccess: () => {
-      alert('註冊成功')
+      alertModal('success', '註冊成功')
     },
     onError: (err) => {
-      alert(err.response.data.message || '註冊失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '註冊失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -47,10 +49,10 @@ export const useLogout = () => {
     onSuccess: () => {
       removeToken()
       queryClient.removeQueries(['auth'])
-      alert('登出成功')
+      alertModal('success', '登出成功')
     },
     onError: (err) => {
-      alert(err.response.data.message || '登出失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '登出失敗，請重試或是洽詢客服')
     }
   })
 }
