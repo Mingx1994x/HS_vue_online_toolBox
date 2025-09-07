@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-const historyTodosLimits = 3
+const historyTodosLimits = 10
 export const useTodoStore = defineStore('todoStore', () => {
   // state
   const historyTodos = ref([])
