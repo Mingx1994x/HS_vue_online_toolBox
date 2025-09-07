@@ -34,17 +34,17 @@
 @layer component {
   /* 按鈕 */
   .btn {
-    @apply px-12 py-3 w-auto text-center;
+    @apply px-12 py-3 w-auto text-center duration-200 ease-in-out;
   }
   .btn-square {
     @apply p-2.5 text-center;
   }
   .btn-primary {
-    @apply text-neutral-500 bg-primary-500;
+    @apply text-neutral-500 bg-primary-500 hover:bg-amber-400;
   }
 
   .btn-neutral {
-    @apply text-white bg-neutral-500;
+    @apply text-white bg-neutral-500 hover:bg-gray-600;
   }
 
   .btn-alert {

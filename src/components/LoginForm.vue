@@ -2,6 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { useField, useForm } from 'vee-validate'
 import { z } from 'zod'
+import FunctionalButton from './FunctionalButton.vue'
 
 // 表單驗證
 const signInSchema = toTypedSchema(
@@ -20,9 +21,6 @@ const { value: loginEmail } = useField('email')
 const { value: loginPassword } = useField('password')
 
 const emits = defineEmits(['switch-mode', 'submit-form'])
-const handleSwitchMode = (mode) => {
-  emits('switch-mode', mode)
-}
 
 const onSubmit = handleSubmit((values) => {
   emits('submit-form', values)
@@ -70,17 +68,16 @@ const onSubmit = handleSubmit((values) => {
         <div class="flex flex-col items-center gap-y-3">
           <button
             type="submit"
-            class="btn btn-neutral hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-[10px] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="btn btn-neutral focus:ring-2 focus:outline-none focus:ring-neutral-300 font-medium rounded-[10px]"
           >
             登入
           </button>
-          <button
-            type="button"
-            class="btn btn-primary hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-[10px] dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            @click="handleSwitchMode('sign_up')"
-          >
-            註冊帳號
-          </button>
+          <FunctionalButton
+            custom-class="btn btn-primary focus:ring-2 focus:outline-none focus:ring-neutral-500 font-medium rounded-[10px]"
+            text="註冊帳號"
+            action-mode="sign_up"
+            @click-function="emits('switch-mode', $event)"
+          />
         </div>
       </form>
     </div>
