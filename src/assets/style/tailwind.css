@@ -24,6 +24,11 @@
   body {
     background-color: var(--color-primary-500);
   }
+
+  button,
+  a {
+    cursor: pointer;
+  }
 }
 
 @layer component {

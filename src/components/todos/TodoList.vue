@@ -69,10 +69,16 @@ const handleEditTodo = (id, content) => {
         <template v-if="!editModeTodos[todo.id]?.isEditing">
           <div class="border-b-2 border-neutral-100 -mb-[2px] pb-4 flex items-center">
             <button type="button" v-if="todo.status" @click="toggleTodo(todo.id)">
-              <span class="material-symbols-outlined check-icon text-primary-500"> check </span>
+              <span
+                class="material-symbols-outlined check-icon text-primary-500 hover:text-alert-500"
+              >
+                check
+              </span>
             </button>
             <button type="button" v-else @click="toggleTodo(todo.id)">
-              <span class="material-symbols-outlined checkbox-icon text-neutral-300">
+              <span
+                class="material-symbols-outlined checkbox-icon text-neutral-300 hover:text-alert-500"
+              >
                 check_box_outline_blank
               </span>
             </button>
@@ -81,12 +87,18 @@ const handleEditTodo = (id, content) => {
             </p>
             <div class="ms-auto flex items-center gap-x-2">
               <button type="button" @click="handleEditMode(todo.id, todo.content)">
-                <span class="material-symbols-outlined edit-icon text-neutral-500">
+                <span
+                  class="material-symbols-outlined edit-icon text-neutral-500 hover:text-alert-500"
+                >
                   edit_square
                 </span>
               </button>
               <button type="button" @click="handleRemoveTodo(todo.id)">
-                <span class="material-symbols-outlined delete-icon text-neutral-500"> delete </span>
+                <span
+                  class="material-symbols-outlined delete-icon text-neutral-500 hover:text-alert-500"
+                >
+                  delete
+                </span>
               </button>
             </div>
           </div>
