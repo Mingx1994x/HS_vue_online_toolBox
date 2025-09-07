@@ -5,3 +5,6 @@
 @import './style/tailwind.css';
 /* sweatAlert */
 @import './style/sweatAlert.css';
+
+/* vue3-loading-overlay */
+@import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
