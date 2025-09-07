@@ -1,34 +1,8 @@
-import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 
-const { VITE_APP_BASEURL: baseUrl } = import.meta.env
+import { addTodo, editTodo, getTodo, patchTodo, removeTodo } from "@/utils/todosAPI";
+import { alertModal } from "@/utils/alertTools";
 
-const getTodo = async () => {
-  const res = await axios.get(`${baseUrl}/todos`)
-  return res.data
-}
-const addTodo = (newTodo) => (axios.post(`${baseUrl}/todos`, {
-  content: newTodo
-}))
-
-
-const patchTodo = (id) => (axios.patch(`${baseUrl}/todos/${id}/toggle`))
-
-
-const removeTodo = async (id) => {
-  const res = await axios.delete(`${baseUrl}/todos/${id}`)
-  return res.data
-}
-
-const editTodo = async ({ id, content }) => {
-
-  console.log("editTodo", id, content)
-
-  const res = await axios.put(`${baseUrl}/todos/${id}`, {
-    content,
-  })
-  return res.data
-}
 
 export const useTodo = (options = {}) => {
   return useQuery({
@@ -48,7 +22,7 @@ export const useAddTodo = () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '新增失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '新增失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -58,12 +32,11 @@ export const useRemoveTodo = () => {
 
   return useMutation({
     mutationFn: removeTodo,
-    onSuccess: (res) => {
-      alert(res.message)
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '移除失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '移除失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -73,12 +46,11 @@ export const useToggleTodo = () => {
 
   return useMutation({
     mutationFn: patchTodo,
-    onSuccess: (res) => {
-      console.log('toggle', res);
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '完成勾選失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '完成勾選失敗，請重試或是洽詢客服')
     }
   })
 }
@@ -88,13 +60,11 @@ export const useEditTodo = () => {
 
   return useMutation({
     mutationFn: editTodo,
-    onSuccess: (res) => {
-      console.log('edit', res);
-      alert(res.message)
+    onSuccess: () => {
       queryClient.invalidateQueries(['todos'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '編輯失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '編輯失敗，請重試或是洽詢客服')
     }
   })
 }

@@ -1,43 +1,31 @@
-import axios from 'axios'
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
-import { getToken, removeToken, setCookie } from '@/utils/cookieTools'
+import { removeToken, setCookie } from '@/utils/cookieTools'
+import { checkout, signIn, signOut, signUp } from '@/utils/authAPI'
+import { alertModal } from '@/utils/alertTools'
 
-const { VITE_APP_BASEURL: baseUrl } = import.meta.env
-
-const signIn = (userField) => (axios.post(`${baseUrl}/users/sign_in`, userField))
-
-const signUp = (userField) => (axios.post(`${baseUrl}/users/sign_up`, userField))
-
-const signOut = () => (axios.post(
-  `${baseUrl}/users/sign_out`,
-  {},
-  {
-    headers: {
-      authorization: getToken(),
-    },
-  },
-))
-
-const checkout = async () => {
-  const res = await axios.get(`${baseUrl}/users/checkout`, {
-    headers: {
-      authorization: getToken(),
-    },
+export const useCheckout = () => {
+  return useQuery({
+    queryKey: ['auth'],
+    queryFn: checkout,
+    staleTime: 1000 * 60 * 5,
   })
-  return res.data
 }
 
 export const useLogin = () => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: signIn,
-    onSuccess: (res) => {
-      const { token, exp } = res.data
+    onSuccess: async (res) => {
       // 儲存 token
+      const { token, exp } = res.data
       setCookie(token, exp)
+      // 重新驗證 
+      await queryClient.refetchQueries(['auth'])
     },
     onError: (err) => {
-      alert(err.response.data.message || '登入失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '登入失敗，請重試或是洽詢客服')
+
     }
   })
 }
@@ -46,36 +34,25 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: signUp,
     onSuccess: () => {
-      alert('註冊成功')
+      alertModal('success', '註冊成功')
     },
     onError: (err) => {
-      alert(err.response.data.message || '註冊失敗，請重試或是洽詢客服')
-    }
-  })
-}
-
-export const useCheckout = () => {
-  return useMutation({
-    mutationFn: checkout,
-    onSuccess: () => {
-      axios.defaults.headers['authorization'] = getToken()
-
-    },
-    onError: () => {
-      alert('token 錯誤或是已過期，請重新登入')
+      alertModal('error', err.response.data.message || '註冊失敗，請重試或是洽詢客服')
     }
   })
 }
 
 export const useLogout = () => {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: signOut,
     onSuccess: () => {
       removeToken()
-      alert('登出成功')
+      queryClient.removeQueries(['auth'])
+      alertModal('success', '登出成功')
     },
     onError: (err) => {
-      alert(err.response.data.message || '登出失敗，請重試或是洽詢客服')
+      alertModal('error', err.response.data.message || '登出失敗，請重試或是洽詢客服')
     }
   })
 }
