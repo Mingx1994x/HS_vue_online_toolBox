@@ -1,12 +1,19 @@
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
+const historyTodosLimits = 3
+export const useTodoStore = defineStore('todoStore', () => {
+  // state
+  const historyTodos = ref([])
+  // actions
+  function saveHistoryTodos(todo) {
+    if (historyTodos.value.length < historyTodosLimits) {
+      historyTodos.value.unshift(todo)
+    } else {
+      historyTodos.value.unshift(todo)
+      historyTodos.value.pop()
+    }
   }
 
-  return { count, doubleCount, increment }
+  return { historyTodos, saveHistoryTodos }
 })
