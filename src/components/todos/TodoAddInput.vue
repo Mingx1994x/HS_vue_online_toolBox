@@ -13,6 +13,8 @@ const newTodo = ref('')
 const { mutate: addTodo } = useAddTodo()
 const todoStore = useTodoStore()
 const { saveHistoryTodos } = todoStore
+
+const addInputRef = ref(null)
 const handleAddTodo = (newTodoData) => {
   if (!newTodoData) {
     alertModal('error', '請輸入代辦事項')
@@ -21,6 +23,8 @@ const handleAddTodo = (newTodoData) => {
   addTodo(newTodoData, {
     onSuccess: () => {
       saveHistoryTodos(newTodoData)
+      // 移除 input 焦點狀態
+      addInputRef.value?.blur()
       showToast('success', '新增成功')
       newTodo.value = ''
     },
@@ -47,6 +51,7 @@ const handleInput = (todo) => {
     <input
       type="text"
       id="register_nickname"
+      ref="addInputRef"
       class="bg-neutral-50 text-neutral-500 border-none rounded-[10px] focus:ring-neutral-500 focus:border-neutral-500 block w-full py-3 ps-4 custom-drop-shadow"
       placeholder="新增待辦事項"
       v-model.trim="newTodo"
