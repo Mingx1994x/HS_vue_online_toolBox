@@ -1,16 +1,16 @@
 <script setup>
-import { computed, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useCheckout, useLogout } from '@/composable/useAuth'
 import { useTodo } from '@/composable/useTodo'
-import { useFullScreenLoader } from '@/composable/useLoading'
+import { confirmModal } from '@/utils/alertTools'
 
 // components
 import DashBoardHeader from '@/components/DashBoardHeader.vue'
 import TodoBox from '@/components/todos/TodoBox.vue'
 import TodoAddInput from '@/components/todos/TodoAddInput.vue'
-import { confirmModal } from '@/utils/alertTools'
+import FullScreenLoading from '@/components/FullScreenLoading.vue'
 
 const { data: checkoutState } = useCheckout()
 const { mutate: signOut } = useLogout()
@@ -34,16 +34,6 @@ const userNickname = computed(() => checkoutState.value?.nickname ?? '')
 
 // getTodo
 const { data: todos, isLoading, isFetching } = useTodo({ enabled: userLoginState })
-
-// loader
-const fullScreenLoader = useFullScreenLoader()
-watchEffect(() => {
-  if (isLoading.value || isFetching.value) {
-    fullScreenLoader.show()
-  } else {
-    fullScreenLoader.hide()
-  }
-})
 </script>
 <template>
   <div class="sm:bg-linear-primary min-h-screen">
@@ -56,5 +46,6 @@ watchEffect(() => {
         </div>
       </div>
     </div>
+    <FullScreenLoading :show-loading="isLoading || isFetching" />
   </div>
 </template>
