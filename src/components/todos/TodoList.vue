@@ -51,6 +51,12 @@ const handleEditTodo = (id, content) => {
     alertModal('error', '請輸入代辦事項')
     return
   }
+  const targetTodo = props.todoList.filter((todo) => todo.id === id)
+
+  if (targetTodo.length !== 0 && targetTodo[0]?.content === content) {
+    alertModal('error', '代辦事項內容並未修改')
+    return
+  }
   editTodo(
     { id, content },
     {

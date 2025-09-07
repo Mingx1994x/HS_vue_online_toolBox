@@ -20,9 +20,6 @@ export const removeTodo = async (id) => {
 }
 
 export const editTodo = async ({ id, content }) => {
-
-  console.log("editTodo", id, content)
-
   const res = await axios.put(`${baseUrl}/todos/${id}`, {
     content,
   })
