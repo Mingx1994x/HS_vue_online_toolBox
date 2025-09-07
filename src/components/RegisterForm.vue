@@ -35,7 +35,6 @@ const { value: confirmPassword } = useField('confirmPassword')
 const emits = defineEmits(['switch-mode', 'submit-form'])
 
 const onSubmit = handleSubmit((values) => {
-  console.log(values)
   const { email, nickname, password } = values
   emits('submit-form', { email, nickname, password })
 })
