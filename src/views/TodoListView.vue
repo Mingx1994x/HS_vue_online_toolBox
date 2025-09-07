@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 
 import { useCheckout, useLogout } from '@/composable/useAuth'
 import { useTodo } from '@/composable/useTodo'
+import { useFullScreenLoader } from '@/composable/useLoading'
 
 // components
 import DashBoardHeader from '@/components/DashBoardHeader.vue'
@@ -11,7 +12,7 @@ import TodoBox from '@/components/todos/TodoBox.vue'
 import TodoAddInput from '@/components/todos/TodoAddInput.vue'
 import { confirmModal } from '@/utils/alertTools'
 
-const { data: checkoutState, isLoading: checkLoading, isFetching: checkFetching } = useCheckout()
+const { data: checkoutState } = useCheckout()
 const { mutate: signOut } = useLogout()
 const router = useRouter()
 const handleSignout = () => {
@@ -31,22 +32,16 @@ const userLoginState = computed(() => checkoutState.value?.status ?? false)
 
 const userNickname = computed(() => checkoutState.value?.nickname ?? '')
 
-watchEffect(() => {
-  if (checkLoading.value || checkFetching.value) {
-    console.log('正在驗證使用者')
-  } else {
-    console.log('使者者', checkoutState.value)
-  }
-})
-
 // getTodo
 const { data: todos, isLoading, isFetching } = useTodo({ enabled: userLoginState })
 
+// loader
+const fullScreenLoader = useFullScreenLoader()
 watchEffect(() => {
   if (isLoading.value || isFetching.value) {
-    console.log('正在抓取資料')
+    fullScreenLoader.show()
   } else {
-    console.log('新增資料', todos.value)
+    fullScreenLoader.hide()
   }
 })
 </script>
